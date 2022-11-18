@@ -22,8 +22,8 @@ const getGifts = async (): Promise<IGift[]> => {
 }
 export const Home = () => {
   const { signin } = useContext(AuthContext);
-  const [contentModal, setcontentModal] = useState(``);
-  const [titleModal, settitleModal] = useState(`ERROR!!!`);
+  const [contentModal, setContentModal] = useState(``);
+  const [titleModal, setTitleModal] = useState(`ERROR!!!`);
   const [showModal, setShowModal] = useState(false);
   const [value, setValue] = useState("");
   const navigate = useNavigate()
@@ -35,13 +35,13 @@ export const Home = () => {
     if (typeof res === 'number') {
       setShowModal(true)
       if (res === 404) {
-        setcontentModal(`Error : Código no existe`)
+        setContentModal(`Error : Código no existe`)
       }
       if (res === 423) {
-        setcontentModal(`Error : Código ya jugado`)
+        setContentModal(`Error : Código ya jugado`)
       }
       if (res === 500) {
-        setcontentModal(`Error : Intente más tarde`)
+        setContentModal(`Error : Intente más tarde`)
       }
 
     } else {
