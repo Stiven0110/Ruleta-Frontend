@@ -60,7 +60,7 @@ export const Home = () => {
     <div className="contenedor">
       <Card>
         <Card.Text>
-          <h2>Ingrese Codigo</h2>
+          Ingrese Código
         </Card.Text>
         <input
           type="text"
