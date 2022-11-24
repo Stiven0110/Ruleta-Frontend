@@ -7,7 +7,9 @@ import { ModalRendering } from '../components/Modal'
 
 type props = {
   gifts: IGift[],
-  code: ICode
+  code: ICode,
+  isAvailable: boolean,
+  setIsAvailable: any
 }
 const updateStatus = async (id: number, status: boolean): Promise<ICode | number> => {
   const data = axios.patch(`${import.meta.env.VITE_APP_URL}/api/v1/codes/${id}`, { newStatus: status })
@@ -23,10 +25,12 @@ export const Roulette = (props: props) => {
   let ang = 0;       // Angle rotation in radians
   let isSpinning = false;
   let isAccelerating = false;
+  let sound = new Audio('src/assets/sound/ruleta.wav')
+  let win = new Audio('src/assets/sound/Win.wav')
+
 
   const { gifts: sectors, code } = props;
   const [angVelMax, setAngVelMax] = useState(0); // Random ang.vel. to acceletare to
-  const [isAvailable, setIsAvailable] = useState(true);
   const speeds = [
     { id: 1, speedsList: [0.62, 1.023798] },
     { id: 2, speedsList: [0.84] },
@@ -81,8 +85,11 @@ export const Roulette = (props: props) => {
     ctx.restore();
   }
   const runGame = () => {
-    if (!isAvailable) return;
-    setIsAvailable(false)
+    if (props.isAvailable) {
+      sound.play()
+    }
+    if (!props.isAvailable) return;
+    props.setIsAvailable(false)
     if (isSpinning) return;
     isSpinning = true;
     isAccelerating = true;
@@ -104,7 +111,11 @@ export const Roulette = (props: props) => {
     if (code.id_premio_fk === 2) {
       setFriction(0.994);
     }
+    win.pause();
   }, [runGame])
+  useEffect(() => {
+    props.setIsAvailable(true)
+  }, []);
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
@@ -130,7 +141,7 @@ export const Roulette = (props: props) => {
               // Accelerate
               if (isAccelerating) {
                 angVel ||= angVelMin; // Initial velocity kick
-                angVel *= 1.06; // Accelerate
+                angVel *= 1.06; // Accelerate              
               }
               // Decelerate
               else {
@@ -142,9 +153,10 @@ export const Roulette = (props: props) => {
                   angVel = 0;
                   setShowModal(true)
                   const gift = sectors.find((sector: any) => sector.id_premio_pk === code.id_premio_fk)?.premio
-
                   setcontentModal(`Felicidades ganaste  ${gift} ${code.numero_chance && `con el número: ${code.numero_chance}`}`)
                   updateStatus(code.id_codigo_pk, true)
+                  win.play()
+                  sound.pause()
                 }
               }
               ang += angVel; // Update angle
@@ -167,6 +179,7 @@ export const Roulette = (props: props) => {
       <canvas ref={canvasRef} id="wheel" width="400px" height="400px"></canvas>
       <div ref={spinRef} id="spin" onClick={runGame}>Jugar!!!</div>
       <ModalRendering title={titleModal} res={contentModal} showModal={showModal} setShowModal={setShowModal} />
+
     </div>
   )
 }
