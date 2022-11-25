@@ -8,8 +8,8 @@ import { ModalRendering } from '../components/Modal'
 type props = {
   gifts: IGift[],
   code: ICode,
-  isAvailable: boolean,
-  setIsAvailable: any
+  // isAvailable: boolean,
+  // setIsAvailable: any
 }
 const updateStatus = async (id: number, status: boolean): Promise<ICode | number> => {
   const data = axios.patch(`${import.meta.env.VITE_APP_URL}/api/v1/codes/${id}`, { newStatus: status })
@@ -31,6 +31,7 @@ export const Roulette = (props: props) => {
 
   const { gifts: sectors, code } = props;
   const [angVelMax, setAngVelMax] = useState(0); // Random ang.vel. to acceletare to
+  const [isAvailable, setIsAvailable] = useState(true);
   const speeds = [
     { id: 1, speedsList: [0.62, 1.023798] },
     { id: 2, speedsList: [0.84] },
@@ -85,19 +86,17 @@ export const Roulette = (props: props) => {
     ctx.restore();
   }
   const runGame = () => {
-    if (props.isAvailable) {
+    if (isAvailable) {
       sound.play()
     }
-    if (!props.isAvailable) return;
-    props.setIsAvailable(false)
+    if (!isAvailable) return;
+    setIsAvailable(false)
     if (isSpinning) return;
     isSpinning = true;
     isAccelerating = true;
   }
   const randomSpeed = () => {
-    const speedsListValue = speeds.find((speed) => {
-      if (speed.id === code.id_premio_fk) return speed.speedsList
-    })
+    const speedsListValue = speeds.find((speed) => speed.id == code.id_premio_fk)
     if (speedsListValue) {
       return speedsListValue.speedsList[Math.floor(Math.random() * speedsListValue.speedsList.length)]
     }
@@ -113,9 +112,6 @@ export const Roulette = (props: props) => {
     }
     win.pause();
   }, [runGame])
-  useEffect(() => {
-    props.setIsAvailable(true)
-  }, []);
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
