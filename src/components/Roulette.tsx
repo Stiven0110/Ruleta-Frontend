@@ -25,8 +25,7 @@ export const Roulette = (props: props) => {
   let ang = 0;       // Angle rotation in radians
   let isSpinning = false;
   let isAccelerating = false;
-  let sound = new Audio('src/assets/sound/ruleta.wav')
-  let win = new Audio('src/assets/sound/Win.wav')
+
 
 
   const { gifts: sectors, code } = props;
@@ -87,7 +86,6 @@ export const Roulette = (props: props) => {
   }
   const runGame = () => {
     if (isAvailable) {
-      sound.play()
     }
     if (!isAvailable) return;
     setIsAvailable(false)
@@ -96,7 +94,7 @@ export const Roulette = (props: props) => {
     isAccelerating = true;
   }
   const randomSpeed = () => {
-    const speedsListValue = speeds.find((speed) => speed.id == code.id_premio_fk)
+    const speedsListValue = speeds.find((speed) => speed.id == parseInt(code.id_premio_fk))
     if (speedsListValue) {
       return speedsListValue.speedsList[Math.floor(Math.random() * speedsListValue.speedsList.length)]
     }
@@ -104,13 +102,12 @@ export const Roulette = (props: props) => {
   }
   useEffect(() => {
     setAngVelMax(randomSpeed())
-    if (code.id_premio_fk === 10) {
+    if (code.id_premio_fk === "10") {
       setFriction(0.99105);
     }
-    if (code.id_premio_fk === 2) {
+    if (code.id_premio_fk === "2") {
       setFriction(0.994);
     }
-    win.pause();
   }, [runGame])
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -126,7 +123,6 @@ export const Roulette = (props: props) => {
           if (spin) {
             const rotate = () => {
               const sector = sectors[getIndex()];
-
               canvasContext.canvas.style.transform = `rotate(${ang - PI / 2}rad)`;
               spin.textContent = !angVel ? "Jugar!!!" : sector.label;
               spin.style.background = sector.color;
@@ -150,9 +146,7 @@ export const Roulette = (props: props) => {
                   setShowModal(true)
                   const gift = sectors.find((sector: any) => sector.id_premio_pk === code.id_premio_fk)?.premio
                   setcontentModal(`Felicidades ganaste  ${gift} ${code.numero_chance && `con el número: ${code.numero_chance}`}`)
-                  updateStatus(code.id_codigo_pk, true)
-                  win.play()
-                  sound.pause()
+                  updateStatus(parseInt(code.id_codigo_pk), true)
                 }
               }
               ang += angVel; // Update angle
