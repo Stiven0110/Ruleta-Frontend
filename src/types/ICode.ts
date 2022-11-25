@@ -1,7 +1,7 @@
 export interface ICode {
-  id_codigo_pk: number,
+  id_codigo_pk: string,
   codigo: string,
-  id_premio_fk: number,
-  jugado: number,
+  id_premio_fk: string,
+  jugado: string,
   numero_chance: string
 }
