@@ -11,6 +11,14 @@ type props = {
   // isAvailable: boolean,
   // setIsAvailable: any
 }
+const PI = Math.PI;
+const TAU = 2 * PI;
+const angVelMin = 0.002; // Below that number will be treated as a stop
+let angVel = 0;    // Current angular velocity
+let ang = 0;       // Angle rotation in radians
+let isSpinning = false;
+let isAccelerating = false;
+
 const updateStatus = async (id: number, status: boolean): Promise<ICode | number> => {
   const data = axios.patch(`${import.meta.env.VITE_APP_URL}/api/v1/codes/${id}`, { newStatus: status })
     .then((response) => response.data)
@@ -18,13 +26,6 @@ const updateStatus = async (id: number, status: boolean): Promise<ICode | number
   return data
 }
 export const Roulette = (props: props) => {
-  const PI = Math.PI;
-  const TAU = 2 * PI;
-  const angVelMin = 0.002; // Below that number will be treated as a stop
-  let angVel = 0;    // Current angular velocity
-  let ang = 0;       // Angle rotation in radians
-  let isSpinning = false;
-  let isAccelerating = false;
 
 
 
@@ -100,7 +101,9 @@ export const Roulette = (props: props) => {
     }
     return 0.0
   }
+
   useEffect(() => {
+    
     setAngVelMax(randomSpeed())
     if (code.id_premio_fk === "10") {
       setFriction(0.99105);
@@ -118,6 +121,12 @@ export const Roulette = (props: props) => {
         canvasCtxRef.current = canvasContext;
         setDiameter(canvasContext.canvas.width)
         if (radius != 0) {
+          //!
+          angVel = 0;    // Current angular velocity
+          ang = 0;       // Angle rotation in radians
+          isSpinning = false;
+          isAccelerating = false;      
+          //!
           sectors.forEach((sector: IGift, index: number) => drawSector(sector, index, canvasContext));
           const spin = spinRef.current;
           if (spin) {
