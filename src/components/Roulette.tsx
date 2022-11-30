@@ -4,11 +4,10 @@ import { Wheel } from 'react-custom-roulette'
 import { ICode } from '../types/ICode'
 import { ModalRendering } from './Modal';
 
-const updateStatus = async (id: number, status: boolean): Promise<ICode | number> => {
+const updateStatus = async (id: string, status: boolean): Promise<ICode | number> => {
   const data = axios.patch(`${import.meta.env.VITE_APP_URL}/api/v1/codes/${id}`, { newStatus: status })
     .then((response) => response.data)
     .catch((error) => error.response.status)
-  console.log(data, "data updte")
   return data
 }
 
@@ -19,15 +18,19 @@ export const Roulette = (props: any) => {
   const [contentModal, setcontentModal] = useState(``);
   const [titleModal, setTitleModal] = useState(`GANASTE!!!`);
   const [showModal, setShowModal] = useState(false);
+  const [alreadyPlayed,setAlreadyPlayed] = useState(false)
+
   const handleSpinClick = () => {
-    setPrizeNumber(props.code.id_premio_fk - 1)
-    setMustSpin(true)
+    if(!alreadyPlayed){
+      setPrizeNumber(parseInt(props.code.id_premio_fk) - 1)
+      setMustSpin(true)
+    }
   }
   useEffect(() => {
     setData(props.numGifts)
   }, [])
   return (
-    <>
+    <div>
       <Wheel
         mustStartSpinning={mustSpin}
         prizeNumber={prizeNumber}
@@ -49,16 +52,15 @@ export const Roulette = (props: any) => {
         onStopSpinning={() => {
           setMustSpin(false);
           setShowModal(true);
-          setcontentModal(`Felicidades ganaste  ${props.gifts[props.code.id_premio_fk - 1].option} ${props.code.numero_chance && `con el número: ${props.code.numero_chance}`}`);
+          setcontentModal(`Felicidades ganaste  ${props.gifts[parseInt(props.code.id_premio_fk) - 1].option} ${props.code.numero_chance && `con el número: ${props.code.numero_chance}`}`);
           updateStatus(props.code.id_codigo_pk, true);
-          console.log("se detuvo");
-
+          setAlreadyPlayed(true)
         }}
       />
-      <button className='girarRuleta' onClick={handleSpinClick}>SPIN</button>
+      <button className='girarRuleta' onClick={handleSpinClick}>GIRAR!</button>
       <ModalRendering title={titleModal} res={contentModal} showModal={showModal} setShowModal={setShowModal} />
 
 
-    </>
+    </div>
   )
 }

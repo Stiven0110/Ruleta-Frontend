@@ -32,7 +32,6 @@ export const Home = () => {
   }
   const showFunction = async (ev: any) => {
     const res = await validateCode(value)
-    console.log(res)
     if (typeof res === 'number') {
       setShowModal(true)
       if (res === 404) {
@@ -43,9 +42,6 @@ export const Home = () => {
       }
       if (res === 500) {
         setContentModal(`Error : Intente más tarde`)
-      }
-      if (res === 204) {
-        setContentModal('Error: Codigo vacio')
       }
 
     } else {
@@ -72,11 +68,12 @@ export const Home = () => {
           onChange={handleInputValue}
         >
         </input>
-        <button
-          onClick={showFunction}
-        >
-          Entra!
-        </button>
+          <button
+            onClick={showFunction}
+            disabled={value.length === 0}
+          >
+            Ingresar
+          </button>
         <ModalRendering title={titleModal} res={contentModal} showModal={showModal} setShowModal={setShowModal} />
       </Card>
     </div >

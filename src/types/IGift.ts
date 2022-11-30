@@ -1,5 +1,5 @@
 export interface IGift {
-  id_premio_pk: Number,
+  id_premio_pk: string,
   premio: string,
   label: string,
   color: string
