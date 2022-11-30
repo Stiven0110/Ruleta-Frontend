@@ -9,13 +9,13 @@ import { ModalRendering } from '../components/Modal'
 import { AuthContext } from '../context/fakeAuthContext';
 
 const validateCode = async (code: string): Promise<ICode | number> => {
-  const data = axios.post(`${import.meta.env.VITE_APP_URL}/api/v1/codes`, { code: code })
+  const data = await axios.post(`${import.meta.env.VITE_APP_URL}/api/v1/codes`, { code: code })
     .then((response) => response.data)
     .catch((error) => error.response.status)
   return data
 }
 const getGifts = async (): Promise<IGift[]> => {
-  const gifts = axios.get(`${import.meta.env.VITE_APP_URL}/api/v1/gifts`)
+  const gifts = await axios.get(`${import.meta.env.VITE_APP_URL}/api/v1/gifts`)
     .then((response) => response.data)
     .catch((error) => error)
   return gifts;
@@ -32,6 +32,7 @@ export const Home = () => {
   }
   const showFunction = async (ev: any) => {
     const res = await validateCode(value)
+    console.log(res)
     if (typeof res === 'number') {
       setShowModal(true)
       if (res === 404) {
@@ -42,6 +43,9 @@ export const Home = () => {
       }
       if (res === 500) {
         setContentModal(`Error : Intente más tarde`)
+      }
+      if (res === 204) {
+        setContentModal('Error: Codigo vacio')
       }
 
     } else {

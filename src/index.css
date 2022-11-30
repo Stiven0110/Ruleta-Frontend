@@ -24,6 +24,23 @@
 
 }
 
+.fondo .girarRuleta {
+  left: 45%;
+  position: absolute;
+  top: 75%;
+  background-color: red;
+  font-size: large;
+}
+
+.fondo .bhdLno {
+  top: 5%;
+  width: 90vw;
+  max-width: 490px;
+  left: 63vh;
+  height: 84vw;
+  max-height: 485px;
+
+}
 
 #wheel {
   display: flex;
