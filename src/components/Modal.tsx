@@ -12,7 +12,7 @@ export function ModalRendering(props: any) {
                 <Modal.Body>{props.res} </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
-                        Close
+                        Cerrar
                     </Button>
                 </Modal.Footer>
             </Modal>

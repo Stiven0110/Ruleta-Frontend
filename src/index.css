@@ -25,9 +25,9 @@
 }
 
 .fondo .girarRuleta {
-  left: 47%;
+  left: 48%;
   position: absolute;
-  top: 36%;
+  top: 39%;
   background-color: white;
   font-size: large;
   z-index: 999;
