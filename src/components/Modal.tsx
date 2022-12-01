@@ -9,7 +9,8 @@ export function ModalRendering(props: any) {
                 <Modal.Header closeButton>
                     <Modal.Title>{props.title}</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>{props.res} </Modal.Body>
+                <Modal.Body className='modalGift'>{props.res} </Modal.Body>
+                <Modal.Body>{props.anun} </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
                         Cerrar

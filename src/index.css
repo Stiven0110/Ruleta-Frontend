@@ -25,9 +25,9 @@
 }
 
 .fondo .girarRuleta {
-  left: 48%;
+  left: 47%;
   position: absolute;
-  top: 39%;
+  top: 74%;
   background-color: white;
   font-size: large;
   z-index: 999;
@@ -114,6 +114,10 @@
 .contenedor p {
   font-size: x-large;
   font-weight: 600;
+}
+
+.modalGift {
+  font-weight: bold;
 }
 
 button {

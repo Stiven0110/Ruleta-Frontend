@@ -18,10 +18,12 @@ export const Roulette = (props: any) => {
   const [contentModal, setcontentModal] = useState(``);
   const [titleModal, setTitleModal] = useState(`GANASTE!!!`);
   const [showModal, setShowModal] = useState(false);
-  const [alreadyPlayed,setAlreadyPlayed] = useState(false)
+  const [alreadyPlayed, setAlreadyPlayed] = useState(false)
+  const [anun, setAnun] = useState(`Gracias por participar, pronto nos comunicaremos contigo para hacer redimible tu premio.`)
+
 
   const handleSpinClick = () => {
-    if(!alreadyPlayed){
+    if (!alreadyPlayed) {
       setPrizeNumber(parseInt(props.code.id_premio_fk) - 1)
       setMustSpin(true)
     }
@@ -55,10 +57,11 @@ export const Roulette = (props: any) => {
           setcontentModal(`Felicidades ganaste  ${props.gifts[parseInt(props.code.id_premio_fk) - 1].option} ${props.code.numero_chance && `con el número: ${props.code.numero_chance}`}`);
           updateStatus(props.code.id_codigo_pk, true);
           setAlreadyPlayed(true)
+
         }}
       />
       <button className='girarRuleta' onClick={handleSpinClick}>GIRAR!</button>
-      <ModalRendering title={titleModal} res={contentModal} showModal={showModal} setShowModal={setShowModal} />
+      <ModalRendering title={titleModal} res={contentModal} showModal={showModal} setShowModal={setShowModal} anun={anun} />
 
 
     </div>
