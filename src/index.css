@@ -25,19 +25,20 @@
 }
 
 .fondo .girarRuleta {
-  left: 46%;
+  left: 47%;
   position: absolute;
-  top: 33%;
-  background-color: red;
+  top: 36%;
+  background-color: white;
   font-size: large;
-  z-index: 999
+  z-index: 999;
 }
 
 .fondo .bhdLno {
-  top: 5%;
+  position: absolute;
+  top: 7%;
   width: 90vw;
   max-width: 490px;
-  left: 63vh;
+  left: 70vh;
   height: 84vw;
   max-height: 485px;
 
